@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OW input probe (machine-readable)</title>
+<!--
+  Throwaway Phase 0 probe (PLAN.md §2.4 / Spike A). It answers ONE question:
+  does Wallpaper Engine deliver pointer / wheel / keyboard input to a Web wallpaper?
+
+  It reports through two channels that need no human eyes:
+    1. the whole surface is painted a solid colour encoding the counters, so a
+       screenshot + pixel statistics answer the question;
+    2. every event also fires an image beacon at the local dev server, so the
+       counters can be read as text (the wallpaper's own CSP/network policy
+       permitting — a blocked beacon is itself a finding).
+
+  Colour encoding (background):
+    R = 32 + min(120, pointermove count)    (mouse motion reached the page)
+    G = min(255, wheel count * 48)          (wheel reached the page)
+    B = 32 + min(120, pointerdown count)    (press reached the page)
+  Top-left 40x40 patch: drag distance / 4, focus ? 255 : 0, keydown ? 255 : 0
+  Top-right 40x40 patch: pointerup*24, click*24, wheel deltaY sign (128 up / 64 down)
+-->
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #202020; }
+  #patchL, #patchR { position: fixed; top: 0; width: 40px; height: 40px; }
+  #patchL { left: 0; }
+  #patchR { right: 0; }
+  #text { position: fixed; left: 0; bottom: 0; font: 20px monospace; color: #fff; }
+</style>
+</head>
+<body>
+<div id="patchL"></div>
+<div id="patchR"></div>
+<div id="text">probe boot</div>
+<script>
+'use strict';
+var C = { move: 0, down: 0, up: 0, wheel: 0, dy: 0, key: 0, drag: 0, dragging: false, startX: 0, startY: 0 };
+var fired = {};
+var BEACON = 'http://127.0.0.1:8124/beacon';
+
+function beacon(ev, extra) {
+  // one beacon per event type, then every 5th event of that type (keeps the log small)
+  C[ev] = (C[ev] || 0) + 1;
+  var n = C[ev];
+  if (!fired[ev] || n % 5 === 0) {
+    fired[ev] = true;
+    try { new Image().src = BEACON + '?ev=' + ev + '&n=' + n + (extra ? '&' + extra : '') + '&t=' + n; } catch (e) {}
+  }
+}
+
+function paint() {
+  var r = 32 + Math.min(120, C.move);
+  var g = Math.min(255, C.wheel * 48);
+  var b = 32 + Math.min(120, C.down);
+  document.body.style.background = 'rgb(' + r + ',' + g + ',' + b + ')';
+  document.getElementById('patchL').style.background =
+    'rgb(' + Math.min(255, Math.round(C.drag / 4)) + ',' + (document.hasFocus() ? 255 : 0) + ',' + (C.key ? 255 : 0) + ')';
+  document.getElementById('patchR').style.background =
+    'rgb(' + Math.min(255, C.up * 24) + ',' + Math.min(255, C.up * 24 - 255) + ',' + Math.min(255, C.wheel * 24) + ')';
+  document.getElementById('text').textContent =
+    'cfg=' + JSON.stringify(C) + ' focus=' + document.hasFocus() + ' hidden=' + document.hidden;
+}
+
+window.addEventListener('pointermove', function (e) {
+  beacon('move');
+  if (C.dragging) C.drag += Math.abs(e.clientX - C.startX) + Math.abs(e.clientY - C.startY);
+  paint();
+}, { passive: true });
+window.addEventListener('pointerdown', function (e) {
+  beacon('down', 'btn=' + e.button);
+  C.dragging = true; C.startX = e.clientX; C.startY = e.clientY;
+  paint();
+});
+window.addEventListener('pointerup', function () { beacon('up'); C.dragging = false; paint(); });
+window.addEventListener('mousemove', function () { beacon('mmove'); });
+window.addEventListener('mousedown', function () { beacon('mdown'); });
+window.addEventListener('click', function () { beacon('click'); });
+window.addEventListener('wheel', function (e) {
+  beacon('wheel', 'dy=' + Math.round(e.deltaY) + '&mode=' + e.deltaMode);
+  C.dy += e.deltaY; paint();
+}, { passive: true });
+window.addEventListener('keydown', function (e) { beacon('key', 'k=' + e.key); C.key = 1; paint(); });
+window.addEventListener('focus', function () { beacon('focus'); paint(); });
+window.wallpaperPropertyListener = {
+  applyUserProperties: function (u) { beacon('prop', 'keys=' + Object.keys(u).join('+')); }
+};
+
+setInterval(paint, 200);
+paint();
+beacon('boot');
+</script>
+</body>
+</html>

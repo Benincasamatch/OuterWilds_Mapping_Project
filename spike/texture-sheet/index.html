@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Texture contact sheet (dev only, not shipped)</title>
+<style>
+  html,body{margin:0;background:#0a0c10;color:#c9d1d9;font:12px/1.4 Consolas,monospace;}
+  h1{font-size:14px;font-weight:600;margin:12px 16px 4px;color:#8b949e}
+  #sheet{display:grid;grid-template-columns:repeat(auto-fill,256px);gap:10px;padding:12px 16px;}
+  figure{margin:0}
+  canvas{width:256px;height:128px;display:block;border:1px solid #21262d;image-rendering:pixelated}
+  figcaption{color:#8b949e;margin-top:2px}
+</style>
+</head>
+<body>
+<h1>程序化贴图接触表 · wallpaper/js/render/textures.js 的 paintLayerPixels（与 GPU 上传路径同一生成器）</h1>
+<div id="sheet"></div>
+<script type="module">
+// DEV-ONLY verification page: draws every declared texture layer at 512x256.
+// Loaded over http:// (npm run serve) so ES modules resolve.
+import bodiesDoc from '../../wallpaper/data/bodies.js';
+import { paintLayerPixels } from '../../wallpaper/js/render/textures.js';
+
+const W = 512, H = 256;
+const sheet = document.getElementById('sheet');
+let count = 0;
+for (const body of bodiesDoc.bodies) {
+  const tex = body.texture;
+  if (!tex) continue;
+  for (const variant of tex.variants ?? ['default']) {
+    const px = paintLayerPixels(tex.key, tex.palette, variant, W, H);
+    const fig = document.createElement('figure');
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const ctx = c.getContext('2d');
+    const img = ctx.createImageData(W, H);
+    img.data.set(px);
+    ctx.putImageData(img, 0, 0);
+    const cap = document.createElement('figcaption');
+    cap.textContent = `${tex.key} / ${variant}`;
+    fig.append(c, cap);
+    sheet.append(fig);
+    count++;
+  }
+}
+document.title = `${count} layers — texture sheet`;
+window.__sheet = { count };
+</script>
+</body>
+</html>

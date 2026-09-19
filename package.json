@@ -1,0 +1,19 @@
+{
+  "name": "outerwilds-mapping-project",
+  "private": true,
+  "type": "module",
+  "version": "0.2.1-dev",
+  "description": "Outer Wilds solar system 3D recreation — Wallpaper Engine web wallpaper (unofficial fan content)",
+  "scripts": {
+    "build:data": "node tools/build-data.mjs",
+    "build:bundle": "node tools/build-bundle.mjs",
+    "build": "npm run build:data && npm run build:bundle",
+    "test": "node --test \"test/*.test.mjs\"",
+    "serve": "node tools/serve.mjs",
+    "test:browser": "node tools/check-browser.mjs",
+    "preview:cover": "node tools/check-browser.mjs --preview",
+    "diagnose:input": "node tools/analyze-input.mjs",
+    "verify": "npm run build && npm test",
+    "package": "npm run verify && node tools/build-package.mjs"
+  }
+}

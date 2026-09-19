@@ -1,0 +1,127 @@
+{
+  "title": "Outer Wilds — Solar System (Unofficial Fan Wallpaper)",
+  "description": "Unofficial fan content. 3D real-time orrery of the Outer Wilds solar system including the full 22-minute loop. Textures are generated procedurally. Not affiliated with Mobius Digital or Annapurna Interactive. This work is unofficial Fan Content created under permission from the Mobius Digital Fan Content Policy. It includes materials which are the property of Mobius Digital and it is neither approved nor endorsed by Mobius Digital.",
+  "type": "web",
+  "file": "index.html",
+  "preview": "preview.jpg",
+  "tags": [
+    "Space"
+  ],
+  "version": 1,
+  "general": {
+    "properties": {
+      "fpslimit": {
+        "order": 0,
+        "text": "交互帧率上限 (Interacting FPS limit)",
+        "type": "slider",
+        "value": 30,
+        "min": 15,
+        "max": 60,
+        "step": 1
+      },
+      "idlefps": {
+        "order": 1,
+        "text": "空闲帧率 (Idle FPS)",
+        "type": "slider",
+        "value": 15,
+        "min": 5,
+        "max": 30,
+        "step": 1
+      },
+      "timescale": {
+        "order": 2,
+        "text": "时间倍率 (Time scale, 1 = real time)",
+        "type": "slider",
+        "precision": 2,
+        "value": 1,
+        "min": 0.25,
+        "max": 10
+      },
+      "orbitlines": {
+        "order": 3,
+        "text": "显示轨道线 (Orbit lines)",
+        "type": "bool",
+        "value": true
+      },
+      "realscale": {
+        "order": 4,
+        "text": "真实比例 (True scale — for verification)",
+        "type": "bool",
+        "value": false
+      },
+      "compression": {
+        "order": 5,
+        "text": "轨道压缩指数 p (Orbit compression)",
+        "type": "slider",
+        "precision": 2,
+        "value": 0.45,
+        "min": 0.2,
+        "max": 1
+      },
+      "bodyscale": {
+        "order": 6,
+        "text": "天体半径放大 (Body radius scale, cap 1.47)",
+        "type": "slider",
+        "precision": 2,
+        "value": 1.4,
+        "min": 1,
+        "max": 1.5
+      },
+      "localscale": {
+        "order": 7,
+        "text": "卫星/互绕放大 (Local orbit scale)",
+        "type": "slider",
+        "precision": 2,
+        "value": 2,
+        "min": 1,
+        "max": 4
+      },
+      "starbrightness": {
+        "order": 8,
+        "text": "星空亮度 (Star brightness)",
+        "type": "slider",
+        "precision": 2,
+        "value": 1,
+        "min": 0,
+        "max": 2
+      },
+      "qmdwell": {
+        "order": 9,
+        "text": "量子月驻留时间 s (Quantum Moon dwell)",
+        "type": "slider",
+        "value": 30,
+        "min": 10,
+        "max": 120,
+        "step": 5
+      },
+      "pausemode": {
+        "order": 10,
+        "text": "暂停后恢复方式 (Resume behaviour)",
+        "type": "combo",
+        "value": "paused-loop",
+        "options": [
+          {
+            "label": "暂停循环（推荐）",
+            "value": "paused-loop"
+          },
+          {
+            "label": "跟随真实时间",
+            "value": "wall-clock"
+          }
+        ]
+      },
+      "showhud": {
+        "order": 11,
+        "text": "显示调试信息 (Debug HUD)",
+        "type": "bool",
+        "value": false
+      },
+      "showcontrols": {
+        "order": 12,
+        "text": "显示缩放按钮（滚轮不可用时使用） / View controls",
+        "type": "bool",
+        "value": true
+      }
+    }
+  }
+}

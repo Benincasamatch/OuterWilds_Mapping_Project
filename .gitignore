@@ -1,0 +1,12 @@
+# This project lives inside a notes-only parent repository. Keep its source files.
+!*
+!**/*
+node_modules/
+dist/
+coverage/
+.browser-test/
+*.log
+spike/*-report.txt
+spike/render-check-*.png
+*.tmp
+.desktop-test/

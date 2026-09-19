@@ -1,0 +1,890 @@
+{
+  "meta": {
+    "schema": 1,
+    "generatedAt": "2026-09-17",
+    "cycleS": 1360,
+    "muSun": 400000000,
+    "sources": {
+      "datamine": "data/sources/ow-game-data-community.csv (sha256 c631a2e0…)",
+      "clock": "data/sources/ow-clock-events.json (sha256 7482a16a…)",
+      "handMeasured": "u/AltorinianUniverse — r/outerwilds t3_dhx2if (via pullpush archive)"
+    },
+    "credits": [
+      "Lilac Peregrine",
+      "Mister Nebula",
+      "Gorfinhofin",
+      "Thomas",
+      "Brungo",
+      "Brady"
+    ],
+    "labels": {
+      "datamine": "datamine",
+      "measured": "measured",
+      "derived": "derived",
+      "design": "design",
+      "inferred": "inferred"
+    }
+  },
+  "sun": {
+    "id": "sun",
+    "radiusM": 2001.75,
+    "radiusSource": "datamine"
+  },
+  "bodies": [
+    {
+      "id": "sun",
+      "name": "太阳",
+      "nameEn": "Sun",
+      "internal": "SUN",
+      "primary": null,
+      "frame": "root",
+      "radiusM": 2001.75,
+      "radiusSource": "datamine",
+      "massKg": 400000000000,
+      "massSource": "datamine",
+      "orbit": null,
+      "rotation": {
+        "periodS": null,
+        "note": "datamine remark: \"Inconclusive\"; design decision: no spin",
+        "source": "design"
+      },
+      "texture": {
+        "key": "sun",
+        "procedural": "shader",
+        "palette": [
+          "#fff6d8",
+          "#ffb347",
+          "#ff5e2b"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "hourglass_barycentre",
+      "name": "沙漏双星质心",
+      "nameEn": "Hourglass Twins barycentre",
+      "internal": null,
+      "primary": "sun",
+      "frame": "heliocentric",
+      "virtual": true,
+      "radiusM": 0,
+      "radiusSource": "design",
+      "massKg": null,
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 5000.001352656617,
+        "periodS": 110.76,
+        "phaseDeg": 0,
+        "distanceSource": "datamine",
+        "periodSource": "datamine",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": null,
+        "source": "design"
+      },
+      "texture": null
+    },
+    {
+      "id": "ash_twin",
+      "name": "灰烬双星",
+      "nameEn": "Ash Twin",
+      "internal": "TOWER_TWIN",
+      "primary": "hourglass_barycentre",
+      "frame": "local",
+      "radiusM": 169,
+      "radiusSource": "datamine",
+      "massKg": 1600000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 250,
+        "periodS": 55,
+        "phaseDeg": 180,
+        "distanceSource": "datamine",
+        "periodSource": "measured",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": 89.75,
+        "angularVelocityRaw": "100/7",
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "ash_twin",
+        "palette": [
+          "#c8a274",
+          "#8d6e46",
+          "#4a3524"
+        ],
+        "variants": [
+          "full",
+          "empty"
+        ],
+        "variantSource": [
+          "datamine",
+          "design"
+        ]
+      }
+    },
+    {
+      "id": "ember_twin",
+      "name": "余烬双星",
+      "nameEn": "Ember Twin",
+      "internal": "CAVE_TWIN",
+      "primary": "hourglass_barycentre",
+      "frame": "local",
+      "radiusM": 170,
+      "radiusSource": "datamine",
+      "massKg": 1600000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 250,
+        "periodS": 55,
+        "phaseDeg": 0,
+        "distanceSource": "datamine",
+        "periodSource": "measured",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": 125.66,
+        "angularVelocityRaw": "20",
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "ember_twin",
+        "palette": [
+          "#d8a15c",
+          "#9a6a35",
+          "#3d2a18"
+        ],
+        "variants": [
+          "full",
+          "empty"
+        ],
+        "variantSource": [
+          "datamine",
+          "design"
+        ]
+      }
+    },
+    {
+      "id": "timber_hearth",
+      "name": "木炉星",
+      "nameEn": "Timber Hearth",
+      "internal": "TIMBER_HEARTH",
+      "primary": "sun",
+      "frame": "heliocentric",
+      "radiusM": 254,
+      "radiusSource": "datamine",
+      "atmosphereM": 0,
+      "massKg": 3000000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 8593.085981,
+        "periodS": 250.25,
+        "phaseDeg": 132,
+        "distanceSource": "datamine",
+        "periodSource": "datamine",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": 628.31,
+        "angularVelocityRaw": "100",
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "timber_hearth",
+        "palette": [
+          "#3f7d3a",
+          "#2a5a2b",
+          "#8b6b3f"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "brittle_hollow",
+      "name": "脆空",
+      "nameEn": "Brittle Hollow",
+      "internal": "BRITTLE_HOLLOW",
+      "primary": "sun",
+      "frame": "heliocentric",
+      "radiusM": 272,
+      "radiusSource": "datamine",
+      "atmosphereM": 0,
+      "massKg": 3000000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 11690.89092,
+        "periodS": 397.94,
+        "phaseDeg": 245,
+        "distanceSource": "datamine",
+        "periodSource": "datamine",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": 314.15,
+        "angularVelocityRaw": "50",
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "brittle_hollow",
+        "palette": [
+          "#5b6b7d",
+          "#3c4757",
+          "#d8d8e0"
+        ],
+        "variants": [
+          "intact",
+          "holed"
+        ]
+      }
+    },
+    {
+      "id": "giants_deep",
+      "name": "深巨星",
+      "nameEn": "Giant’s Deep",
+      "internal": "GIANTS_DEEP",
+      "primary": "sun",
+      "frame": "heliocentric",
+      "radiusM": 500,
+      "radiusSource": "datamine",
+      "atmosphereM": 959,
+      "atmosphereSource": "datamine",
+      "massKg": 21800000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 16457.58738,
+        "periodS": 650,
+        "phaseDeg": 300,
+        "distanceSource": "datamine",
+        "periodSource": "measured",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": null,
+        "angularVelocityRaw": "0",
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "giants_deep",
+        "palette": [
+          "#2b5f8f",
+          "#1d4266",
+          "#0f2b45"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "dark_bramble",
+      "name": "黑棘",
+      "nameEn": "Dark Bramble",
+      "internal": "DARK_BRAMBLE",
+      "primary": "sun",
+      "frame": "heliocentric",
+      "radiusM": 203.3,
+      "radiusSource": "datamine",
+      "atmosphereM": 0,
+      "massKg": 3250000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 20000,
+        "periodS": 875.16,
+        "phaseDeg": 65,
+        "distanceSource": "datamine",
+        "periodSource": "datamine",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": null,
+        "angularVelocityRaw": "0",
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "dark_bramble",
+        "palette": [
+          "#2b2334",
+          "#1a1622",
+          "#4a3a52"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "interloper",
+      "name": "闯入者",
+      "nameEn": "The Interloper",
+      "internal": "COMET",
+      "primary": "sun",
+      "frame": "heliocentric",
+      "radiusM": 83,
+      "radiusSource": "datamine",
+      "massKg": 550000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "ellipse",
+        "aM": 13250,
+        "eM": 0.8113207547169812,
+        "periodS": 479.1524246033595,
+        "perihelionEpochS": 1192.2356453396446,
+        "perihelionM": 2500,
+        "aphelionM": 24000,
+        "aSource": "derived",
+        "eSource": "derived",
+        "periodSource": "derived",
+        "phaseSource": "derived",
+        "note": "perihelion epoch solved so the sun impact lands on OWClock 1185s (PLAN.md §3.9)"
+      },
+      "rotation": {
+        "periodS": null,
+        "tidalLock": true,
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "interloper",
+        "palette": [
+          "#cfe8f5",
+          "#8fb8cc",
+          "#5d7f92"
+        ],
+        "variants": [
+          "closed",
+          "open"
+        ]
+      }
+    },
+    {
+      "id": "sun_station",
+      "name": "太阳站",
+      "nameEn": "Sun Station",
+      "internal": "SUN_STATION",
+      "primary": "sun",
+      "frame": "heliocentric",
+      "radiusM": 60,
+      "radiusSource": "design",
+      "massKg": 300000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 2315,
+        "periodS": 35,
+        "phaseDeg": 210,
+        "distanceSource": "derived",
+        "periodSource": "measured",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": 35,
+        "tidalLock": true,
+        "source": "measured"
+      },
+      "texture": {
+        "key": "sun_station",
+        "palette": [
+          "#d8c9a8",
+          "#8f8064",
+          "#4a4234"
+        ],
+        "variants": [
+          "intact",
+          "engulfed"
+        ]
+      }
+    },
+    {
+      "id": "white_hole",
+      "name": "白洞",
+      "nameEn": "White Hole",
+      "internal": "WHITE_HOLE",
+      "primary": "sun",
+      "frame": "heliocentric",
+      "radiusM": 25,
+      "radiusSource": "design",
+      "massKg": null,
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 11690.89092,
+        "periodS": 397.94,
+        "phaseDeg": 5,
+        "distanceSource": "design",
+        "periodSource": "design",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": null,
+        "source": "design"
+      },
+      "texture": {
+        "key": "white_hole",
+        "palette": [
+          "#f2f6ff",
+          "#a9c4ff",
+          "#3b4a7a"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "white_hole_station",
+      "name": "白洞站",
+      "nameEn": "White Hole Station",
+      "internal": "WHITE_HOLE_STATION",
+      "primary": "white_hole",
+      "frame": "local",
+      "radiusM": 90,
+      "radiusSource": "design",
+      "massKg": null,
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 300,
+        "periodS": 120,
+        "phaseDeg": 0,
+        "distanceSource": "design",
+        "periodSource": "design",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": 120,
+        "tidalLock": true,
+        "source": "design"
+      },
+      "texture": {
+        "key": "white_hole_station",
+        "palette": [
+          "#b9c7d6",
+          "#6f7f92",
+          "#39424e"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "stranger",
+      "name": "陌生者",
+      "nameEn": "The Stranger",
+      "internal": "CLOAKED_PLANET",
+      "primary": "sun",
+      "frame": "heliocentric",
+      "radiusM": 600,
+      "radiusSource": "design",
+      "massKg": null,
+      "orbit": {
+        "kind": "drift",
+        "distanceStartM": 22000,
+        "distanceEndM": 30000,
+        "phaseDeg": 190,
+        "speedUpAtS": 400,
+        "speedUpFactor": 1.3,
+        "distanceSource": "design",
+        "periodSource": "design",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": 220,
+        "source": "design"
+      },
+      "texture": {
+        "key": "stranger",
+        "palette": [
+          "#1b2430",
+          "#101720",
+          "#39485c"
+        ],
+        "variants": [
+          "cloaked",
+          "sails"
+        ]
+      }
+    },
+    {
+      "id": "eye",
+      "name": "宇宙之眼",
+      "nameEn": "Eye of the Universe",
+      "internal": "EYE_OF_THE_UNIVERSE",
+      "primary": "sun",
+      "frame": "heliocentric",
+      "radiusM": 201,
+      "radiusSource": "datamine",
+      "massKg": 9000000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 500000,
+        "periodS": null,
+        "phaseDeg": 0,
+        "distanceSource": "design",
+        "note": "datamine 410000-657000 is a triangulation band; fixed value is a design decision (PLAN.md §3.10)"
+      },
+      "rotation": {
+        "periodS": null,
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "eye",
+        "palette": [
+          "#1a2b3a",
+          "#0d1620",
+          "#6fb0d8"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "attlerock",
+      "name": "阿特勒岩",
+      "nameEn": "Attlerock",
+      "internal": "TIMBER_MOON",
+      "primary": "timber_hearth",
+      "frame": "local",
+      "radiusM": 80,
+      "radiusSource": "datamine",
+      "massKg": 50000000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 900,
+        "periodS": 103.29,
+        "phaseDeg": 0,
+        "distanceSource": "datamine",
+        "periodSource": "datamine",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": 103.29,
+        "tidalLock": true,
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "attlerock",
+        "palette": [
+          "#8d8d8d",
+          "#5c5c5c",
+          "#2e2e2e"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "skyshutter",
+      "name": "天空快门卫星",
+      "nameEn": "SkyShutter Satellite",
+      "internal": "MAP_SATELLITE",
+      "primary": "timber_hearth",
+      "frame": "local",
+      "radiusM": 20,
+      "radiusSource": "design",
+      "massKg": null,
+      "massSource": "design",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 500,
+        "periodS": 40,
+        "phaseDeg": 40,
+        "distanceSource": "design",
+        "periodSource": "measured",
+        "phaseSource": "inferred"
+      },
+      "rotation": {
+        "periodS": null,
+        "tidalLock": false,
+        "source": "design"
+      },
+      "texture": {
+        "key": "skyshutter",
+        "palette": [
+          "#cfd6dd",
+          "#8d959d",
+          "#4a5058"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "hollows_lantern",
+      "name": "空心灯",
+      "nameEn": "Hollow's Lantern",
+      "internal": "VOLCANIC_MOON",
+      "primary": "brittle_hollow",
+      "frame": "local",
+      "radiusM": 97.3,
+      "radiusSource": "datamine",
+      "massKg": 910000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 1000,
+        "periodS": 115,
+        "phaseDeg": 0,
+        "distanceSource": "datamine",
+        "periodSource": "measured",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": 31.41,
+        "tidalLock": false,
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "hollows_lantern",
+        "palette": [
+          "#ff9b4a",
+          "#8a3a10",
+          "#2a1008"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "opc",
+      "name": "轨道探测炮",
+      "nameEn": "Orbital Probe Cannon",
+      "internal": "PROBE_CANNON",
+      "primary": "giants_deep",
+      "frame": "local",
+      "radiusM": 250,
+      "radiusSource": "design",
+      "massKg": null,
+      "massSource": "design",
+      "orbit": {
+        "kind": "circle",
+        "distanceM": 1100,
+        "periodS": 50,
+        "phaseDeg": 0,
+        "distanceSource": "design",
+        "periodSource": "measured",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": null,
+        "tidalLock": false,
+        "source": "design"
+      },
+      "texture": {
+        "key": "opc",
+        "palette": [
+          "#c9c3b2",
+          "#8a8474",
+          "#3d3a33"
+        ],
+        "variants": [
+          "intact",
+          "broken"
+        ]
+      }
+    },
+    {
+      "id": "nomai_probe",
+      "name": "挪麦探测器",
+      "nameEn": "Nomai Probe",
+      "internal": "NOMAI_PROBE",
+      "primary": "opc",
+      "frame": "local",
+      "radiusM": 15,
+      "radiusSource": "design",
+      "massKg": null,
+      "orbit": {
+        "kind": "drift",
+        "distanceStartM": 1100,
+        "speedMps": 25,
+        "launchAtS": 1,
+        "distanceSource": "design",
+        "phaseSource": "design"
+      },
+      "rotation": {
+        "periodS": null,
+        "source": "design"
+      },
+      "texture": {
+        "key": "nomai_probe",
+        "palette": [
+          "#ffe9b0",
+          "#c2a15c",
+          "#4d4028"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    },
+    {
+      "id": "quantum_moon",
+      "name": "量子月",
+      "nameEn": "Quantum Moon",
+      "internal": "QUANTUM_MOON",
+      "primary": "giants_deep",
+      "frame": "local",
+      "radiusM": 73,
+      "radiusSource": "datamine",
+      "massKg": 550000,
+      "massSource": "datamine",
+      "orbit": {
+        "kind": "host-switch",
+        "hostStart": "giants_deep",
+        "hosts": [
+          {
+            "id": "ember_twin",
+            "distanceM": 1700,
+            "source": "datamine"
+          },
+          {
+            "id": "timber_hearth",
+            "distanceM": 1100,
+            "source": "datamine"
+          },
+          {
+            "id": "brittle_hollow",
+            "distanceM": 1400,
+            "source": "datamine"
+          },
+          {
+            "id": "giants_deep",
+            "distanceM": 1500,
+            "source": "datamine"
+          },
+          {
+            "id": "dark_bramble",
+            "distanceM": 1500,
+            "source": "datamine"
+          },
+          {
+            "id": "eye",
+            "distanceM": 6000,
+            "source": "datamine",
+            "reachable": false
+          }
+        ],
+        "phaseDeg": 90,
+        "dwellS": 30,
+        "distanceSource": "datamine",
+        "periodSource": "datamine",
+        "phaseSource": "design",
+        "rule": "jump when not inside the camera frustum and dwellS elapsed; seeded walk; never to the Eye host (PLAN.md §3.10)"
+      },
+      "rotation": {
+        "periodS": null,
+        "source": "datamine"
+      },
+      "texture": {
+        "key": "quantum_moon",
+        "palette": [
+          "#8a93a8",
+          "#5e6678",
+          "#2b3040"
+        ],
+        "variants": [
+          "default"
+        ]
+      }
+    }
+  ],
+  "quantumHosts": [
+    {
+      "id": "ember_twin",
+      "distanceM": 1700,
+      "source": "datamine"
+    },
+    {
+      "id": "timber_hearth",
+      "distanceM": 1100,
+      "source": "datamine"
+    },
+    {
+      "id": "brittle_hollow",
+      "distanceM": 1400,
+      "source": "datamine"
+    },
+    {
+      "id": "giants_deep",
+      "distanceM": 1500,
+      "source": "datamine"
+    },
+    {
+      "id": "dark_bramble",
+      "distanceM": 1500,
+      "source": "datamine"
+    },
+    {
+      "id": "eye",
+      "distanceM": 6000,
+      "source": "datamine",
+      "reachable": false
+    }
+  ],
+  "clearance": [
+    {
+      "pair": "ash_twin ↔ hourglass_barycentre",
+      "visualDistance": 500,
+      "gap": 263.4,
+      "ok": true
+    },
+    {
+      "pair": "ember_twin ↔ hourglass_barycentre",
+      "visualDistance": 500,
+      "gap": 262,
+      "ok": true
+    },
+    {
+      "pair": "white_hole_station ↔ white_hole",
+      "visualDistance": 600,
+      "gap": 439,
+      "ok": true
+    },
+    {
+      "pair": "attlerock ↔ timber_hearth",
+      "visualDistance": 1800,
+      "gap": 1332.4,
+      "ok": true
+    },
+    {
+      "pair": "skyshutter ↔ timber_hearth",
+      "visualDistance": 1000,
+      "gap": 616.4000000000001,
+      "ok": true
+    },
+    {
+      "pair": "hollows_lantern ↔ brittle_hollow",
+      "visualDistance": 2000,
+      "gap": 1482.98,
+      "ok": true
+    },
+    {
+      "pair": "opc ↔ giants_deep",
+      "visualDistance": 2200,
+      "gap": 507.4000000000001,
+      "ok": true
+    },
+    {
+      "pair": "sun ↔ sun_station (t=0, mapped)",
+      "visualDistance": 4270.448733045943,
+      "gap": 186.4487330459433,
+      "ok": true
+    }
+  ]
+}

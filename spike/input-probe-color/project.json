@@ -1,0 +1,11 @@
+{
+  "title": "OW input probe (machine-readable)",
+  "description": "Throwaway probe: answers whether Wallpaper Engine forwards pointer/wheel/keyboard input into a Web wallpaper. Not published. See PLAN.md Phase 0 Spike A.",
+  "type": "web",
+  "file": "index.html",
+  "tags": ["Other"],
+  "version": 1,
+  "general": {
+    "properties": {}
+  }
+}

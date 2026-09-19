@@ -1,0 +1,16 @@
+Credit to Lilac Peregrine Mister_Nebula Gorfinhofin Brungo,Radius (m) (most stable flat ground),Radius Error (m),Radius remarks,Mass,Angular velocity,Day length (relative to stars) (s),Rotation error (s),Rotation Remarks,Parent body,Orbital radius to parent body (m),Orbit Remarks,Year length (s),Year length error (s),Quantum Moon Orbital radii (m),Quantum Moon Orbital radii remarks,Credits
+Sun,2001.75 (4000m at end of loop),7.5,From Thomas#9514,4.00E+11,,,,Inconclusive,N/A,,from the source code: thanks to u/Mister_Nebula,,,,N/A,"Lilac Peregrine (data collection and chart organization), Mister Nebula (Datamining), Thomas (Sun radius), Brady. (typo), Brungo (Masses)"
+Ash Twin,169,1,Very stable ground once the sand cleared,1.60E+06,100/7,89.75,0,Guide stars kept exploding,Sun,5000,"The center of [the Hourglass Twins] orbits at 5000.001352656617m, while each planet orbits at 250m -u/Mister_Nebula",110.76,0.24,,"N/A:    The QM orbits Ember Twin at a radius of 1700 (Note that the QM doesn't orbit Ash twin, or the center of the two planets!) -u/Mister_Nebula",
+Ember Twin,170,1,used the top flat area,1.60E+06,20,125.66,0,,Sun,5000,from the source code: thanks to u/Mister_Nebula,110.76,0.24,1700,from the source code: thanks to u/Mister_Nebula,
+Timber Hearth,254,1,"Outside the crater, and guide star went supernova… Twice!",3.00E+06,100,628.31,0,This measurement is 200*pi seconds.,Sun,8593.085981,^,250.25,0.03,1100,^,
+Attlerock,80,0.6,variance due to craters,5.00E+07,16.43911407,103.29,0.07,Tidally locked to Timber Hearth,Timber Hearth,900,^,103.29,,,N/A,
+Brittle Hollow,272,13,"very high variance, used quantum grove and temp campsite as indicators",3.00E+06,50,314.15,0,,Sun,11690.89092,^,397.94,0.77,1400,^,
+Hollow’s Lantern,97.3,2.5,"Bumpy, and measured from ground, not lava",9.10E+05,5,31.41,0,This measurement is 10*pi seconds.,Brittle Hollow,1000,^,,,,N/A,
+Giant’s Deep (Jool),500,1,Measured from sea level - atmosphere is 959m,2.18E+07,0,,,Giant's Deep does not rotate,Sun,16457.58738,^,,,1500,^,
+Dark Bramble,203.3,0.7,"Measured from the seed. If from the ice, you get either 612±16 or 651±13, depending on the ice shelf.",3.25E+06,0,,,Dark Bramble does not rotate,Sun,20000,^,875.16,0.12,1500,^,
+The Interloper,83,1,Measured from the ice. Consistent across all sides I measured.,5.50E+05,?,,,Rotation is visible but slow. It is also tidally locked to the sun. It is unknown but unlikely that the Interloper has a consistent rotation.,Sun,2500 - 24000,The orbit isn’t circular and is highly variable.,,,,N/A,
+Quantum Moon,73,1,All versions of the quantum moon (eye included) were between 72 and 74 in radius.,5.50E+05,0,,,Measurement is difficult due to cloud cover,Various,,Complicated - see following columns,,,,N/A,
+The Eye of the Universe,201,10,"Difficult to calculate - used scout on north pole of the eye. As a result, the measurement is somewhat innacurate.",9.00E+06,0,,,"Inconclusive, but theoretically doable, given there are enough guide stars by the time you reach the eye.",Sun,410000-657000,Data collected through trig readings. Unknown if this reflects the base game.,,,6000,Done using signalscope from the Eye (manually),
+(Sun Station),,,,3.00E+05,,,,,,,,,,,,
+(White Hole Station,,,,,,,,,,,,,,,,
+Stranger,,,,,,,,,,,,,,,,

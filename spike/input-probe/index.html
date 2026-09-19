@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>WE Web Wallpaper Input + GPU Probe</title>
+<style>
+  html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#08090c;color:#e8e6df;
+    font:16px/1.5 "Cascadia Mono",Consolas,"Courier New",monospace;}
+  #wrap{display:flex;flex-direction:column;height:100%;padding:20px;box-sizing:border-box;gap:12px;}
+  #banner{font-size:26px;font-weight:700;letter-spacing:.5px;line-height:1.35;}
+  .ok{color:#7ee787}.bad{color:#ff7b72}.idle{color:#8b949e}.warn{color:#ffb454}
+  #grid{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;font-size:17px;}
+  .k{color:#8b949e}
+  .v{color:#e8e6df;font-weight:600}
+  .v.hit{color:#7ee787}
+  #log{flex:1;overflow:hidden;font-size:13px;color:#8b949e;border-top:1px solid #21262d;padding-top:10px;}
+  #ball{position:fixed;width:56px;height:56px;border-radius:50%;left:50%;top:50%;
+    margin:-28px 0 0 -28px;background:radial-gradient(circle at 35% 35%,#ffb454,#8b3a00);
+    box-shadow:0 0 40px rgba(255,180,84,.35);pointer-events:none;}
+  #hint{position:fixed;bottom:8px;right:14px;font-size:12px;color:#484f58}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="banner" class="idle">等待输入…（把鼠标移到桌面空白处并点击一次）</div>
+  <div id="grid">
+    <span class="k">pointermove / pointerdown / pointerup</span><span class="v" id="v_ptr">0 / 0 / 0</span>
+    <span class="k">mousemove / mousedown / click</span><span class="v" id="v_mouse">0 / 0 / 0</span>
+    <span class="k">pointer capture</span><span class="v" id="v_cap">—</span>
+    <span class="k">拖拽位移</span><span class="v" id="v_drag">0 px</span>
+    <span class="k">wheel（passive:false）</span><span class="v" id="v_wheel">0</span>
+    <span class="k">ΔY 累计 / deltaMode</span><span class="v" id="v_dy">0 / —</span>
+    <span class="k">wheel preventDefault 生效</span><span class="v" id="v_pd">—</span>
+    <span class="k">keydown</span><span class="v" id="v_key">0</span>
+    <span class="k">document.hasFocus()</span><span class="v" id="v_focus">—</span>
+    <span class="k">指针坐标</span><span class="v" id="v_pos">—</span>
+    <span class="k">渲染帧率</span><span class="v" id="v_raf">—</span>
+    <span class="k">页面可见性</span><span class="v" id="v_vis">—</span>
+    <span class="k">WebGL2</span><span class="v" id="v_gl">检测中…</span>
+    <span class="k">GPU</span><span class="v" id="v_gpu">检测中…</span>
+    <span class="k">TEXTURE_2D_ARRAY / aniso</span><span class="v" id="v_tex">检测中…</span>
+  </div>
+  <div id="log"></div>
+</div>
+<div id="ball"></div>
+<div id="hint">WE Web Wallpaper Probe · 2.8+ 用编辑器/设置里的内置 DevTools（旧的 CEF devtools port 已被取代）</div>
+
+<script>
+'use strict';
+// Zero-dependency Wallpaper Engine web-wallpaper probe.
+// Answers, in ONE WE session: mouse/pointer forwarding, wheel delivery,
+// keyboard focus, WebGL2 hardware acceleration, and user-property callbacks.
+const S = { pmove:0, pdown:0, pup:0, mmove:0, mdown:0, click:0, wheel:0, dy:0, key:0,
+            drag:0, dragging:false, cap:false, prevented:0, deltaMode:-1, focus:false, frames:0, paused:false };
+const el = id => document.getElementById(id);
+const logEl = el('log');
+const lines = [];
+function log(msg){
+  lines.push('[' + (performance.now()/1000).toFixed(1) + 's] ' + msg);
+  if (lines.length > 40) lines.shift();
+  logEl.textContent = lines.join('\n');
+}
+function set(id, txt, cls){ const e = el(id); e.textContent = txt; e.className = 'v' + (cls ? ' ' + cls : ''); }
+function hit(id, txt){ set(id, txt, 'hit'); }
+
+// ---- 机器可读通道（PLAN.md Phase 0 Spike A 用）----------------------------------
+// 整个测试的目的就是把"WE 到底有没有把输入转进来"这件事变成可判定的事实。屏幕上
+// 的横幅供人看；这些 beacon 供脚本看：每次事件类型的第一发（以及每 5 发）都发一个
+// 图片请求到本机接收器（`node spike/beacon-server.mjs`，端口 8124，写 spike/beacon.log），
+// 另外每 5 秒发一条汇总，这样即使中途没人盯着屏幕，结果也留得下。
+// 若 beacon 全无（连 boot 都没有），说明 WE 里的页面根本没跑起来或本地 HTTP 被拦。
+const BEACON = 'http://127.0.0.1:8124/beacon';
+const beaconCount = {};
+const sessionId = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
+const pendingImages = new Set();
+function beacon(ev, extra){
+  const n = (beaconCount[ev] = (beaconCount[ev] || 0) + 1);
+  if (ev !== 'summary' && ev !== 'paused' && ev !== 'visibility' && n !== 1 && n % 5 !== 0) return;
+  try {
+    const image = new Image(); pendingImages.add(image);
+    image.onload = image.onerror = () => pendingImages.delete(image);
+    image.src = BEACON + '?ev=' + ev + '&n=' + n + '&session=' + sessionId + (extra ? '&' + extra : '');
+  } catch (e) {}
+}
+function beaconSummary(){
+  beacon('summary', 'ptr=' + S.pmove + '&mdown=' + S.mdown + '&up=' + S.pup +
+    '&drag=' + Math.round(S.drag) + '&wheel=' + S.wheel + '&dy=' + Math.round(S.dy) +
+    '&key=' + S.key + '&focus=' + S.focus + '&vis=' + document.visibilityState +
+    '&screenw=' + screen.width + '&screenh=' + screen.height + '&width=' + innerWidth + '&height=' + innerHeight + '&dpr=' + devicePixelRatio + '&pdown=' + S.pdown + '&frames=' + S.frames + '&uptime=' + (performance.now()/1000).toFixed(2) + '&paused=' + S.paused);
+}
+beacon('boot', 'probe=2');
+beaconSummary();
+setInterval(beaconSummary, 5000);
+
+// ---- 结论横幅：定时器持续重算（事件停下时也能补上最后一帧判定）----
+function verdict(){
+  const b = el('banner');
+  if (S.pmove === 0 && S.mmove === 0 && S.wheel === 0) return;
+  const drag = (S.pdown > 0 || S.mdown > 0) && S.drag > 40;
+  const wheel = S.wheel > 0;
+  const parts = [
+    '<span class="' + (drag ? 'ok' : 'bad') + '">拖动 ' + (drag ? '✅' : '✗') + '</span>',
+    '<span class="' + (wheel ? 'ok' : 'bad') + '">滚轮 ' + (wheel ? '✅' : '✗') + '</span>',
+    '<span class="' + (S.key ? 'ok' : 'warn') + '">键盘 ' + (S.key ? '✅' : '✗') + '</span>',
+  ];
+  const good = drag && wheel;
+  b.className = good ? 'ok' : 'bad';
+  b.innerHTML = parts.join(' &nbsp;|&nbsp; ') +
+    (good ? ' &nbsp;→ 核心交互成立' : ' &nbsp;→ 见 PLAN.md §2.4 备选路径');
+}
+
+// ---- 输入 ----
+addEventListener('pointermove', e => {
+  S.pmove++;
+  if (S.dragging) S.drag += Math.hypot(e.clientX - S.lastX, e.clientY - S.lastY);
+  S.lastX = e.clientX; S.lastY = e.clientY;
+  hit('v_ptr', S.pmove + ' / ' + S.pdown + ' / ' + S.pup);
+  hit('v_pos', Math.round(e.clientX) + ',' + Math.round(e.clientY));
+  el('ball').style.transform = 'translate(' + (e.clientX - innerWidth/2) + 'px,' +
+                               (e.clientY - innerHeight/2) + 'px)';
+  if (S.pmove === 1) log('pointermove 到达 → Pointer Events 可用');
+  beacon('pointermove', 'drag=' + Math.round(S.drag) + '&x=' + Math.round(e.clientX));
+}, {passive:true});
+
+addEventListener('pointerdown', e => {
+  S.pdown++; beacon('pointerdown', 'button=' + e.button + '&type=' + e.pointerType); S.dragging = true; S.lastX = e.clientX; S.lastY = e.clientY;
+  if (e.target && e.target.setPointerCapture) {
+    try { e.target.setPointerCapture(e.pointerId); S.cap = true; hit('v_cap', '成功'); }
+    catch (err) { S.cap = false; set('v_cap', '不支持（' + err.name + '）', 'bad'); }
+  }
+  hit('v_ptr', S.pmove + ' / ' + S.pdown + ' / ' + S.pup);
+  log('pointerdown button=' + e.button + ' pointerType=' + e.pointerType);
+});
+
+addEventListener('pointerup', e => {
+  S.pup++; beacon('pointerup'); S.dragging = false;
+  hit('v_ptr', S.pmove + ' / ' + S.pdown + ' / ' + S.pup);
+  log('pointerup');
+});
+
+// 传统鼠标事件：确认 WE 用的是鼠标消息还是指针消息
+addEventListener('mousemove', () => { S.mmove++; hit('v_mouse', S.mmove + ' / ' + S.mdown + ' / ' + S.click); }, {passive:true});
+addEventListener('mousedown', () => { S.mdown++; beacon('mousedown'); });
+addEventListener('click', () => { S.click++; hit('v_mouse', S.mmove + ' / ' + S.mdown + ' / ' + S.click); });
+
+// 滚轮：本项目最关键的一项。passive:false + preventDefault 也一并验证。
+addEventListener('wheel', e => {
+  S.wheel++; S.dy += e.deltaY; S.deltaMode = e.deltaMode;
+  const canceled = e.cancelable;
+  try { e.preventDefault(); S.prevented++; } catch (err) { /* ignore */ }
+  hit('v_wheel', S.wheel);
+  hit('v_dy', Math.round(S.dy) + ' / ' + e.deltaMode);
+  set('v_pd', canceled ? ('可取消 · 已调用 ' + S.prevented + ' 次') : 'cancelable=false', canceled ? 'hit' : 'bad');
+  log('WHEEL deltaY=' + Number(e.deltaY).toFixed(1) + ' mode=' + e.deltaMode + ' cancelable=' + canceled);
+  if (S.wheel === 1) log('>>> 滚轮事件到达！缩放可用');
+  beacon('wheel', 'dy=' + Math.round(e.deltaY) + '&mode=' + e.deltaMode + '&cancelable=' + canceled + '&pd=' + S.prevented);
+}, {passive:false});
+
+addEventListener('keydown', e => { S.key++; hit('v_key', S.key); beacon('keydown', 'key=' + e.key); log('keydown ' + e.key); });
+addEventListener('focus', () => { S.focus = true; hit('v_focus', 'true'); beacon('focus'); });
+addEventListener('blur', () => { S.focus = false; set('v_focus', 'false', 'bad'); });
+
+// ---- rAF 帧率 / 可见性 ----
+const rafCell = el('v_raf');
+let fpsFrames = 0, t0 = performance.now(), fpsLive = false, rafWarned = false;
+function onVisibility(){
+  hit('v_vis', document.visibilityState + (document.hidden ? ' (hidden)' : ''));
+  beacon('visibility', 'vis=' + document.visibilityState);
+}
+document.addEventListener('visibilitychange', onVisibility);
+onVisibility();
+(function tick(){
+  S.frames++; fpsFrames++;
+  const now = performance.now();
+  if (now - t0 >= 1000) {
+    fpsLive = true;
+    set('v_raf', (fpsFrames * 1000 / (now - t0)).toFixed(1) + ' fps', 'hit');
+    fpsFrames = 0; t0 = now;
+  }
+  requestAnimationFrame(tick);
+})();
+
+// ---- WebGL2 / GPU 能力：决定 §1.2 与 R9 是否成立 ----
+(function probeGpu(){
+  const c = document.createElement('canvas');
+  const gl = c.getContext('webgl2');
+  if (!gl) { set('v_gl', '不可用 ✗（会退化为静态兜底）', 'bad'); set('v_gpu', '—'); set('v_tex', '—'); return; }
+  hit('v_gl', '可用 ✅');
+  const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+  const renderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '(不可得)';
+  const software = /swiftshader|software|llvmpipe|basic render/i.test(renderer);
+  set('v_gpu', renderer.slice(0, 60) + (software ? ' ← 软件渲染！' : ''), software ? 'bad' : 'hit');
+  set('v_tex', 'max ' + gl.getParameter(gl.MAX_TEXTURE_SIZE) +
+    ' · ' + (gl.getExtension('EXT_texture_filter_anisotropic') ? 'aniso ✅' : 'aniso ✗') +
+    ' · 3D ' + gl.getParameter(gl.MAX_3D_TEXTURE_SIZE), 'hit');
+  log('WebGL2: ' + renderer);
+})();
+
+const startedAt = performance.now();
+setInterval(() => {
+  verdict();
+  if (!fpsLive) {
+    const secs = (performance.now() - startedAt) / 1000;
+    if (secs > 3) {
+      set('v_raf', '渲染未运行 ⚠（' + S.frames + ' 帧 / ' + secs.toFixed(1) + 's）', 'bad');
+      if (!rafWarned) {
+        rafWarned = true;
+        log('⚠ 3 秒内 rAF 未跑满一帧（累计 ' + S.frames + ' 帧）：宿主在限帧、页面未呈现，或标签页不可见');
+      }
+    } else {
+      set('v_raf', S.frames + ' 帧 / ' + secs.toFixed(1) + 's');
+    }
+  }
+  if (S.focus !== document.hasFocus()) { S.focus = document.hasFocus(); set('v_focus', String(S.focus), S.focus ? 'hit' : 'bad'); }
+}, 250);
+
+// ---- WE Web Wallpaper 属性回调 ----
+window.wallpaperPropertyListener = {
+  applyUserProperties: function (props) { log('applyUserProperties: ' + JSON.stringify(props)); },
+  applyGeneralProperties: function (props) { log('applyGeneralProperties: ' + JSON.stringify(props)); },
+  setPaused: function (paused) { S.paused = paused; beacon('paused', 'value=' + paused); log('setPaused: ' + paused); }
+};
+
+// 暴露内部状态：在内置 DevTools 控制台可直接查 __probe
+window.__probe = S;
+log('探针就绪。等待 WE 转发鼠标事件…');
+</script>
+</body>
+</html>

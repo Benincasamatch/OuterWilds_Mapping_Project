@@ -1,0 +1,26 @@
+{
+  "date": "2026-09-19T09:57:33.121Z",
+  "checks": [
+    "WebGL2 startup",
+    "150% DPI viewport matches framebuffer",
+    "real browser drag and wheel",
+    "mouse-only zoom/reset controls and host visibility property",
+    "host pause stops simulation and rendering, resume continues",
+    "host properties update live world and HUD",
+    "global host FPS cap",
+    "multi-cycle resume resets stateful world even when cycle time increases",
+    "context restoration recreates renderer and resumes without GL errors",
+    "file:// launch with zero HTTP requests",
+    "probe emits 5-second liveness and classifies received drag + wheel",
+    "standalone distribution loads offline without GL errors",
+    "1920x1080 preview generated from the scene"
+  ],
+  "errors": [],
+  "renderer": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 Laptop GPU (0x00002820) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "software": false,
+    "anisotropic": true,
+    "maxTextureSize": 16384
+  },
+  "status": "PASS"
+}

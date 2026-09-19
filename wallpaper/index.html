@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Outer Wilds Solar System — unofficial fan wallpaper</title>
+<!--
+  Unofficial fan content. Not affiliated with Mobius Digital or Annapurna Interactive.
+  All planet textures are generated procedurally at runtime — no game assets are used.
+  Loaded by Wallpaper Engine as a Web wallpaper (type: web, file: index.html).
+-->
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #04060a; }
+  #view { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  #fallback {
+    position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+    color: #e8e6df; font: 16px/1.6 Georgia, 'Times New Roman', serif; text-align: center; padding: 0 12vw;
+    background: linear-gradient(160deg, #05070c, #0b0f18 60%, #131a26);
+  }
+  #hud {
+    position: fixed; left: 0; top: 0; pointer-events: none; z-index: 5;
+    font: 12px/1.45 Consolas, 'Cascadia Mono', monospace; color: #c9d1d9;
+    text-shadow: 0 1px 2px #000;
+  }
+  #ow-hud {
+    margin: 10px; padding: 8px 10px; max-width: 44vw;
+    background: rgba(6, 9, 14, .62); border: 1px solid rgba(120, 140, 170, .25); border-radius: 6px;
+  }
+  .ow-hud-head { color: #8b949e; margin-bottom: 4px; }
+  .ow-hud-table { border-collapse: collapse; }
+  .ow-hud-table td { padding: 0 8px 0 0; white-space: nowrap; color: #a9b6c4; }
+  .ow-hud-table td:first-child { color: #e8e6df; }
+  .ow-hud-foot { margin-top: 6px; color: #8b949e; }
+  #controls { position: fixed; right: 24px; bottom: 28px; z-index: 4; display: flex; gap: 8px; opacity: .55; transition: opacity .15s; }
+  #controls[hidden] { display: none; }
+  #controls:hover, #controls:focus-within { opacity: 1; }
+  #controls button { width: 42px; height: 42px; border: 1px solid #637178; border-radius: 8px; background: rgba(6, 12, 18, .85); color: #f0e5d1; font: 24px/1 system-ui, sans-serif; cursor: pointer; touch-action: manipulation; }
+  #controls button:hover { background: #22313b; border-color: #d9b775; }
+  #controls button:focus-visible { outline: 2px solid #e5b878; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { #controls { transition: none; } }
+</style>
+</head>
+<body>
+  <canvas id="view"></canvas>
+  <div id="fallback"></div>
+  <div id="hud"></div>
+  <div id="controls"></div>
+  <script src="bundle.js"></script>
+</body>
+</html>
