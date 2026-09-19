@@ -18,9 +18,9 @@ Left drag orbits; lower-right + / − buttons zoom and the home button resets th
 
 ## 未决验收 / Remaining acceptance
 
-横向主屏桌面拖动已通过，滚轮未收到；备用缩放按钮不等于原滚轮要求通过。10 分钟 WE 桌面性能、多显示器和真实宿主暂停恢复尚待验收。详见 `STATUS.md` 和 `acceptance.json`。该包不会自动切换桌面设置或上传。
+桌面交互标准已改为拖动 + 按钮缩放，横向桌面拖动与按钮点击均已确认。10 分钟 WE 桌面性能记录、多显示器和真实宿主暂停恢复尚待验收，性能不设硬门槛。详见 `STATUS.md` 和 `acceptance.json`。该包不会自动切换桌面设置或上传。
 
-Landscape desktop drag passed, but wheel events were not received. Fallback buttons do not satisfy the original wheel requirement. Real-host performance, multi-monitor and pause/resume evidence is detailed in STATUS.md. See STATUS.md and acceptance.json. No automatic desktop changes or uploads are performed.
+The desktop interaction standard is now drag plus on-screen zoom buttons; both were confirmed on the real desktop. Real-host performance recording (no hard threshold), multi-monitor and pause/resume evidence is detailed in STATUS.md. See STATUS.md and acceptance.json. No automatic desktop changes or uploads are performed.
 
 全部贴图程序生成，无游戏提取素材、音频、远程资源下载或遥测。探针与开发工具不在本包内。
 

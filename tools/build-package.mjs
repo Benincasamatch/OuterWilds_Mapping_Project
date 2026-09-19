@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { ROOT } from './serve.mjs';
 import { buildBundle } from './build-bundle.mjs';
-export const PENDING = ['desktop-wheel','fallback-buttons-desktop-click','continuous-idle-performance','full-duration-active-performance','specified-resolution-performance','multi-monitor-extended-performance','wall-clock-and-sleep-resume','visual-review','fan-policy-final-review','workshop-upload-user-approval'];
+export const PENDING = ['visual-match-original','portrait-desktop-input','continuous-idle-performance','full-duration-active-performance','specified-resolution-performance','multi-monitor-extended-performance','wall-clock-and-sleep-resume','visual-review','fan-policy-final-review','workshop-upload-user-approval'];
 export function buildPackage({ root = ROOT, outRoot = path.join(root, 'dist') } = {}) {
   const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
   if(!/^[\w.-]+$/.test(pkg.version)) throw new Error('Invalid package version');

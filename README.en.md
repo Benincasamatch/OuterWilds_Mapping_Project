@@ -22,7 +22,7 @@ Default draw caps are 15 FPS idle and 30 FPS active, further limited by Wallpape
 
 Keep the complete `wallpaper/` directory or generated distribution. The project entry is `project.json`, and its page is `index.html`. Open a local WE preview using its official CLI with `-control openWallpaper -file "<absolute path>/project.json" -playInWindow "Outer Wilds Preview"`.
 
-**Desktop drag passed on the tested landscape display on 2026-09-19; wheel events were not received.** The lower-right + / − buttons provide fallback zoom and the home button resets the view. These do not close the original wheel-input requirement. The earlier desktop test had insufficient liveness evidence; zero input counters do not prove unsupported input. Follow `spike/README.md` in the source project before changing desktop settings.
+**Desktop interaction is drag to orbit plus the lower-right + / − / home buttons.** The host does not forward wheel events to web wallpapers; on 2026-09-19 the user accepted the button scheme as the acceptance standard. Desktop drag and button clicks were both confirmed on the real desktop. Browser wheel zoom remains available. Follow `spike/README.md` in the source project before changing desktop settings.
 
 The property panel exposes frame limits, time scale, orbit visibility, visual scale, star brightness, Quantum Moon dwell time, resume mode and the HUD. Default resume behavior freezes the cycle; optional wall-clock mode catches up once when resumed.
 
