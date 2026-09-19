@@ -10,3 +10,6 @@ spike/*-report.txt
 spike/render-check-*.png
 *.tmp
 .desktop-test/
+spike/reference/*.png
+spike/reference/*.jpg
+spike/reference/*.webp
